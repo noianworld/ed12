@@ -303,11 +303,15 @@ function inkOn(hex){const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].m
 let DZ={};
 function fitHero(){
   const h=document.querySelector('.hero h1');if(!h)return;const hero=h.closest('.hero'),auto=!(+DZ.hero_size);
-  hero.toggleAttribute('data-fit',auto);hero.dataset.al=DZ.hero_align==='center'?'center':'left';
-  if(!auto){h.style.fontSize='';return}
-  const box=h.parentElement,cs=getComputedStyle(box),avail=box.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
-  h.style.fontSize='100px';h.style.display='inline-block';const w=h.getBoundingClientRect().width||1;h.style.display='';
-  h.style.fontSize=Math.max(24,Math.min(240,Math.floor(100*avail/w*.99)))+'px';
+  hero.toggleAttribute('data-fit',auto);hero.dataset.al=DZ.hero_align==='center'?'center':'left';h.style.marginLeft='';
+  if(!auto)h.style.fontSize='';
+  else{const box=h.parentElement,cs=getComputedStyle(box),avail=box.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    h.style.fontSize='100px';h.style.display='inline-block';const w=h.getBoundingClientRect().width||1;h.style.display='';
+    h.style.fontSize=Math.max(24,Math.min(240,Math.floor(100*avail/w*.99)))+'px'}
+  // 큰 글자의 왼쪽 여백만큼 당겨서 아래 글과 왼쪽 끝을 맞추기
+  if(DZ.hero_align!=='center'){const c=getComputedStyle(h),cx=fitHero.cx||(fitHero.cx=document.createElement('canvas').getContext('2d'));
+    cx.font=`${c.fontWeight} ${c.fontSize} ${c.fontFamily}`;const m=cx.measureText((h.textContent||'').trim()[0]||'A');
+    const lsb=-(m.actualBoundingBoxLeft||0);if(lsb>0&&lsb<parseFloat(c.fontSize)*.3)h.style.marginLeft=(-lsb).toFixed(1)+'px'}
 }
 window.addEventListener('resize',fitHero);
 document.fonts?.addEventListener?.('loadingdone',fitHero);
