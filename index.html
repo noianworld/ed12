@@ -52,12 +52,19 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 
 /* 메인 */
 .hero{position:relative;min-height:min(80vh,760px);display:grid;align-items:end;background:#000;color:#f3f3f1;overflow:hidden}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% var(--fy,50%)}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.1) 55%)}
 .hero .t{position:relative;z-index:1;width:100%;padding-bottom:clamp(32px,6vw,72px)}
 .hero h1{font:var(--hw) calc(clamp(40px,9.5vw,128px)*var(--hs,1))/.9 var(--fh);margin:0;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
 .hero p{margin:18px 0 0;font-size:clamp(16px,2vw,20px);max-width:36em}
 .hero[data-fit] h1{white-space:nowrap;text-wrap:nowrap}
+.hero[data-tp=top]{align-items:start}
+.hero[data-tp=top] .t{padding-top:clamp(28px,5vw,64px);padding-bottom:0}
+.hero[data-tp=top]::after{background:linear-gradient(to bottom,rgba(0,0,0,.8),rgba(0,0,0,.05) 50%)}
+.hero[data-tp=below]{display:block;min-height:0;background:var(--bg);color:var(--ink)}
+.hero[data-tp=below] img{position:static;display:block;height:auto;max-height:min(78vh,760px)}
+.hero[data-tp=below]::after{display:none}
+.hero[data-tp=below] .t{padding-top:clamp(24px,4vw,48px)}
 .hero[data-al=center] .t{text-align:center}.hero[data-al=center] p{margin-left:auto;margin-right:auto}
 .sec{padding:clamp(48px,7vw,88px) 0;border-top:1px solid var(--line)}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
@@ -91,8 +98,9 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .lm{font:var(--lw) 11px/1 var(--fh);letter-spacing:.1em;color:var(--sub);display:flex;gap:8px;white-space:nowrap}
 .nx{font-style:normal;background:var(--acc);color:var(--acc-ink);padding:5px 8px}
 .rec{border:1px solid var(--line);padding:4px 7px}
-.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--line);overflow-x:auto}
-.tabs a{font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;text-decoration:none;color:var(--sub);padding:14px 12px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;text-decoration:none;color:var(--sub);padding:14px 12px 13px;border-bottom:2px solid transparent;white-space:nowrap}
 .tabs a[aria-current=page]{color:var(--ink);border-color:var(--ink)}
 
 /* 달력 */
@@ -303,7 +311,7 @@ function inkOn(hex){const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].m
 let DZ={};
 function fitHero(){
   const h=document.querySelector('.hero h1');if(!h)return;const hero=h.closest('.hero'),auto=!(+DZ.hero_size);
-  hero.toggleAttribute('data-fit',auto);hero.dataset.al=DZ.hero_align==='center'?'center':'left';h.style.marginLeft='';
+  hero.toggleAttribute('data-fit',auto);hero.dataset.al=DZ.hero_align==='center'?'center':'left';hero.dataset.tp=['top','below'].includes(DZ.hero_text)?DZ.hero_text:'bottom';h.style.marginLeft='';
   if(!auto)h.style.fontSize='';
   else{const box=h.parentElement,cs=getComputedStyle(box),avail=box.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
     h.style.fontSize='100px';h.style.display='inline-block';const w=h.getBoundingClientRect().width||1;h.style.display='';
@@ -320,7 +328,7 @@ function design(d){ // d: {font_head,font_body,accent,theme,hero_size,hero_align
   const h=HEADS.find(x=>x[0]===d.font_head)||HEADS[0],b=BODIES.find(x=>x[0]===d.font_body)||BODIES[0],a=okHex(d.accent)?d.accent:'#d7ff3a';
   const r=document.documentElement.style;
   r.setProperty('--fh',`"${h[0]}","${b[0]}",sans-serif`);r.setProperty('--fb',`"${b[0]}",system-ui,sans-serif`);
-  r.setProperty('--hs',((+d.hero_size||100)/100).toFixed(2));
+  r.setProperty('--hs',((+d.hero_size||100)/100).toFixed(2));r.setProperty('--fy',(Number.isFinite(+d.hero_focus)&&d.hero_focus!==null&&d.hero_focus!==''?Math.min(100,Math.max(0,+d.hero_focus)):50)+'%');
   r.setProperty('--hw',h[2]);r.setProperty('--lw',h[3]);r.setProperty('--acc',a);r.setProperty('--acc-ink',inkOn(a));
   document.documentElement.dataset.theme=d.theme==='light'?'light':'dark';
   document.querySelector('meta[name=theme-color]').content=d.theme==='light'?'#fafaf8':'#0a0a0a';
@@ -329,7 +337,7 @@ function design(d){ // d: {font_head,font_body,accent,theme,hero_size,hero_align
   fitHero();
 }
 function openDesign(){
-  const st=S.settings,orig={font_head:st.font_head,font_body:st.font_body,accent:st.accent,theme:st.theme,hero_size:st.hero_size??0,hero_align:st.hero_align||'left'},cur={...orig};
+  const st=S.settings,orig={font_head:st.font_head,font_body:st.font_body,accent:st.accent,theme:st.theme,hero_size:st.hero_size??0,hero_align:st.hero_align||'left',hero_text:st.hero_text||'bottom',hero_focus:st.hero_focus??50},cur={...orig};
   // 미리보기용: 목록의 모든 글씨체를 견본 글자만 가볍게 불러오기
   const sample=band()+'NEWS LIVE 0123456789 공연 섭외 및 문의는 아래 메일로 연락 주세요. 한글 제목체 굵은 각진 '+HEADS.concat(BODIES).map(f=>f[0]).join('');
   const chars=[...new Set(sample)].join('');
@@ -339,6 +347,10 @@ function openDesign(){
   $('#dTitle').textContent='디자인';
   $('#dBody').innerHTML=`<div class="dz fb" style="padding:0">
     <p class="sm">고르는 대로 뒤 화면에 바로 적용돼요. 저장을 눌러야 방문자에게도 바뀌어요.</p>
+    <h3>메인 사진 위 글자 위치</h3><p class="sm">사진 속 얼굴을 가리면 위쪽이나 사진 밖으로 옮겨보세요.</p>
+    <div class="seg"><label>${radio('ht','top',cur.hero_text==='top')}사진 위쪽</label><label>${radio('ht','bottom',!['top','below'].includes(cur.hero_text))}사진 아래쪽</label><label>${radio('ht','below',cur.hero_text==='below')}사진 밖</label></div>
+    <h3>사진에서 보일 부분</h3><p class="sm">화면 비율에 따라 사진이 잘릴 때, 위쪽과 아래쪽 중 어디를 보여줄지 정해요.</p>
+    <div class="rng"><span class="sm">위</span><input type="range" id="hf" min="0" max="100" step="5" value="${+cur.hero_focus}" aria-label="사진에서 보일 부분"><span class="sm">아래</span></div>
     <h3 id="dzHero">메인 제목 크기</h3><p class="sm">메인 사진 위의 밴드 이름.</p>
     <div class="seg"><label>${radio('hm','auto',!(+cur.hero_size))}한 줄에 꽉 맞추기</label><label>${radio('hm','manual',+cur.hero_size>0)}직접 조절</label></div>
     <div class="rng" id="hsRow" ${+cur.hero_size?'':'hidden'}><input type="range" id="hs" min="30" max="140" step="5" value="${+cur.hero_size||100}" aria-label="제목 크기"><b id="hsv">${+cur.hero_size||100}%</b></div>
@@ -355,13 +367,14 @@ function openDesign(){
     <div class="row" style="justify-content:space-between"><button type="button" class="btn ol" id="dzReset">기본값으로</button>
       <span class="row"><button type="button" class="btn ol" data-close>취소</button><button type="button" class="btn" id="dzSave">저장</button></span></div></div>`;
   const pick=()=>{const f=$('#frm');cur.font_head=f.fh.value;cur.font_body=f.fb.value;cur.theme=f.th.value;
+    cur.hero_text=f.ht.value;cur.hero_focus=+$('#hf').value;
     const auto=f.hm.value==='auto';cur.hero_size=auto?0:+$('#hs').value;$('#hsRow').hidden=auto;$('#hsv').textContent=$('#hs').value+'%';cur.hero_align=f.ha.value;
     const ac=[...f.querySelectorAll('[name=ac]')].find(x=>x.checked);if(ac)cur.accent=ac.value;design(cur)};
   $('#dBody').oninput=e=>{if(e.target.id==='acCustom'){[...document.querySelectorAll('[name=ac]')].forEach(x=>x.checked=false);cur.accent=e.target.value;design(cur);return}pick()};
-  $('#dzReset').onclick=()=>{Object.assign(cur,{font_head:'Archivo',font_body:'Noto Sans KR',accent:'#d7ff3a',theme:'dark',hero_size:0,hero_align:'left'});
-    const f=$('#frm');f.fh.value='Archivo';f.fb.value='Noto Sans KR';f.th.value='dark';f.hm.value='auto';f.ha.value='left';$('#hsRow').hidden=true;[...f.querySelectorAll('[name=ac]')].forEach(x=>x.checked=x.value==='#d7ff3a');design(cur)};
+  $('#dzReset').onclick=()=>{Object.assign(cur,{font_head:'Archivo',font_body:'Noto Sans KR',accent:'#d7ff3a',theme:'dark',hero_size:0,hero_align:'left',hero_text:'bottom',hero_focus:50});
+    const f=$('#frm');f.fh.value='Archivo';f.fb.value='Noto Sans KR';f.th.value='dark';f.hm.value='auto';f.ha.value='left';f.ht.value='bottom';$('#hf').value=50;$('#hsRow').hidden=true;[...f.querySelectorAll('[name=ac]')].forEach(x=>x.checked=x.value==='#d7ff3a');design(cur)};
   $('#dzSave').onclick=async()=>{$('#dzSave').disabled=true;
-    const {data,error}=await sb.from('hp_settings').update({font_head:cur.font_head||'Archivo',font_body:cur.font_body||'Noto Sans KR',accent:okHex(cur.accent)?cur.accent:'#d7ff3a',theme:cur.theme||'dark',hero_size:+cur.hero_size||0,hero_align:cur.hero_align==='center'?'center':'left'}).eq('id',1).select();
+    const {data,error}=await sb.from('hp_settings').update({font_head:cur.font_head||'Archivo',font_body:cur.font_body||'Noto Sans KR',accent:okHex(cur.accent)?cur.accent:'#d7ff3a',theme:cur.theme||'dark',hero_size:+cur.hero_size||0,hero_align:cur.hero_align==='center'?'center':'left',hero_text:['top','below'].includes(cur.hero_text)?cur.hero_text:'bottom',hero_focus:Math.min(100,Math.max(0,Math.round(+cur.hero_focus||0)))}).eq('id',1).select();
     $('#dzSave').disabled=false;
     if(error||!data?.length){$('#fErr').textContent=/column/i.test(error?.message||'')?'데이터베이스 업데이트가 필요해요. 새 homepage.sql을 한 번 실행해 주세요.':'저장하지 못했어요.';return}
     F.saved=true;S.settings=data[0];$('#dlg').close()};
@@ -391,7 +404,7 @@ function pTop(){
   const st=S.settings,t=today(),up=S.lives.filter(l=>l.date>=t).slice(0,3),al=S.albums[0];
   app.innerHTML=`
   <section class="hero">${st.hero_photo?`<img src="${esc(pub(st.hero_photo))}" alt="${esc(band())}">`:''}
-    <div class="wrap t"><h1>${esc(band())}</h1>${st.tagline?`<p>${esc(st.tagline)}</p>`:''}${editOn?`<div style="margin-top:16px">${eEdit('settings',1,'메인 사진 · 소개 수정')}<button class="eb" data-design="1">제목 크기 · 글씨체</button></div>`:''}</div></section>
+    <div class="wrap t"><h1>${esc(band())}</h1>${st.tagline?`<p>${esc(st.tagline)}</p>`:''}${editOn?`<div style="margin-top:16px">${eEdit('settings',1,'메인 사진 · 소개 수정')}<button class="eb" data-design="1">사진 · 제목 배치</button></div>`:''}</div></section>
   <section class="sec"><div class="wrap"><div class="sec-h"><h2>NEWS</h2><a class="more" href="#/news">MORE →</a></div>
     ${newsRows(S.news.slice(0,4))||empty('아직 소식이 없어요.')}</div></section>
   <section class="sec"><div class="wrap"><div class="sec-h"><h2>LIVE</h2><a class="more" href="#/live">SCHEDULE →</a></div>
