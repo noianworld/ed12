@@ -9,7 +9,9 @@
 <meta property="og:title" content="ELECTRODIVE 12">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="gf" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link id="gfp" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 /* VOICE: 담백하고 단단하게. 사진과 글씨만으로
@@ -17,24 +19,26 @@
    PICTURE: 메인 사진을 화면 끝까지. 사진이 없으면 아주 큰 밴드 이름 글자
    COLOUR and TYPE: 검정 바탕, 흰 글씨, 형광 라임은 NEXT 표시와 편집 버튼에만 / Archivo + Noto Sans KR
    LAYOUT: 위에 고정 메뉴, 섹션은 넓은 여백과 가는 선으로 나눔 */
-:root{color-scheme:dark;--bg:#0a0a0a;--ink:#f3f3f1;--sub:#8e8e8e;--line:#262626;--card:#141414;--acc:#d7ff3a}
+:root{color-scheme:dark;--bg:#0a0a0a;--ink:#f3f3f1;--ink2:#cfcfcd;--sub:#8e8e8e;--line:#262626;--line2:#3a3a3a;--card:#141414;--acc:#d7ff3a;--acc-ink:#0a0a0a;
+  --fh:var(--fh);--fb:var(--fb);--hw:800;--lw:600}
+:root[data-theme=light]{color-scheme:light;--bg:#fafaf8;--ink:#121212;--ink2:#3a3a3a;--sub:#6e6e6e;--line:#e3e3df;--line2:#c9c9c4;--card:#efefeb}
 *{box-sizing:border-box;min-width:0}
 html{scroll-padding-top:80px}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--fb);overflow-x:clip;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--acc);outline-offset:3px}
-.en{font-family:"Archivo","Noto Sans KR",sans-serif}
+.en{font-family:var(--fh)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 max(5vw,20px)}
 .sub{color:var(--sub)}
 [hidden]{display:none!important}
 
 /* 메뉴 */
-header.top{position:sticky;top:0;z-index:30;background:rgba(10,10,10,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+header.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
-.logo{font:800 19px/1 "Archivo",sans-serif;letter-spacing:.02em;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo{font:var(--hw) 19px/1 var(--fh);letter-spacing:.02em;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 nav.menu{display:flex;gap:2px}
-nav.menu a{font:600 13px/1 "Archivo",sans-serif;letter-spacing:.08em;text-decoration:none;padding:12px 10px;color:var(--sub);white-space:nowrap}
+nav.menu a{font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;text-decoration:none;padding:12px 10px;color:var(--sub);white-space:nowrap}
 nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .burger{display:none;width:44px;height:44px;border:0;background:none;padding:10px;cursor:pointer}
 .burger i{display:block;height:2px;background:var(--ink);margin:6px 0;transition:transform .2s}
@@ -47,30 +51,30 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 }
 
 /* 메인 */
-.hero{position:relative;min-height:min(80vh,760px);display:grid;align-items:end;background:#000;overflow:hidden}
+.hero{position:relative;min-height:min(80vh,760px);display:grid;align-items:end;background:#000;color:#f3f3f1;overflow:hidden}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.1) 55%)}
 .hero .t{position:relative;z-index:1;width:100%;padding-bottom:clamp(32px,6vw,72px)}
-.hero h1{font:800 clamp(40px,9.5vw,128px)/.9 "Archivo",sans-serif;margin:0;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
+.hero h1{font:var(--hw) clamp(40px,9.5vw,128px)/.9 var(--fh);margin:0;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
 .hero p{margin:18px 0 0;font-size:clamp(16px,2vw,20px);max-width:36em}
 .sec{padding:clamp(48px,7vw,88px) 0;border-top:1px solid var(--line)}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
-.sec-h h2{font:800 clamp(28px,4vw,44px)/1 "Archivo",sans-serif;margin:0}
-.more{font:600 13px/1 "Archivo",sans-serif;letter-spacing:.08em;color:var(--sub);text-decoration:none;white-space:nowrap;padding:10px 0}
+.sec-h h2{font:var(--hw) clamp(28px,4vw,44px)/1 var(--fh);margin:0}
+.more{font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;color:var(--sub);text-decoration:none;white-space:nowrap;padding:10px 0}
 .more:hover{color:var(--ink)}
 
 /* 하위 페이지 머리 */
 .ph{padding-top:clamp(40px,7vw,80px);padding-bottom:clamp(20px,3vw,32px)}
-.ph h1{font:800 clamp(44px,8vw,96px)/.95 "Archivo",sans-serif;margin:0;letter-spacing:-.01em}
+.ph h1{font:var(--hw) clamp(44px,8vw,96px)/.95 var(--fh);margin:0;letter-spacing:-.01em}
 .ph .row{margin-top:20px}
 .pbody{padding-bottom:clamp(56px,8vw,100px)}
-.back{display:inline-block;margin:28px 0 0;font:600 13px/1 "Archivo",sans-serif;letter-spacing:.08em;color:var(--sub);text-decoration:none;padding:10px 0}
+.back{display:inline-block;margin:28px 0 0;font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;color:var(--sub);text-decoration:none;padding:10px 0}
 
 /* NEWS 목록 */
 .nrow{display:grid;grid-template-columns:130px minmax(0,1fr);gap:20px;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;align-items:baseline}
 .nrow:first-child{border-top:1px solid var(--line)}
 .nrow:hover .nt{text-decoration:underline;text-underline-offset:4px}
-.dt{font:600 14px/1.4 "Archivo",sans-serif;color:var(--sub);white-space:nowrap}
+.dt{font:var(--lw) 14px/1.4 var(--fh);color:var(--sub);white-space:nowrap}
 .tag{display:inline-block;font-size:13px;color:var(--sub);margin-right:8px;white-space:nowrap}
 .tag::before{content:"【"}.tag::after{content:"】"}
 
@@ -78,25 +82,25 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .lrow{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none;align-items:center}
 .lrow:first-child{border-top:1px solid var(--line)}
 .lrow:hover h3{text-decoration:underline;text-underline-offset:4px}
-.ld b{display:block;font:800 34px/1 "Archivo",sans-serif}
-.ld span{font:600 12px/1 "Archivo",sans-serif;letter-spacing:.08em;color:var(--sub)}
+.ld b{display:block;font:var(--hw) 34px/1 var(--fh)}
+.ld span{font:var(--lw) 12px/1 var(--fh);letter-spacing:.08em;color:var(--sub)}
 .li h3{margin:0;font-size:18px;font-weight:700;line-height:1.4}
 .li p{margin:4px 0 0;font-size:14px}
-.lm{font:600 11px/1 "Archivo",sans-serif;letter-spacing:.1em;color:var(--sub);display:flex;gap:8px;white-space:nowrap}
-.nx{font-style:normal;background:var(--acc);color:#0a0a0a;padding:5px 8px}
+.lm{font:var(--lw) 11px/1 var(--fh);letter-spacing:.1em;color:var(--sub);display:flex;gap:8px;white-space:nowrap}
+.nx{font-style:normal;background:var(--acc);color:var(--acc-ink);padding:5px 8px}
 .rec{border:1px solid var(--line);padding:4px 7px}
 .tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--line);overflow-x:auto}
-.tabs a{font:600 13px/1 "Archivo",sans-serif;letter-spacing:.08em;text-decoration:none;color:var(--sub);padding:14px 12px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs a{font:var(--lw) 13px/1 var(--fh);letter-spacing:.08em;text-decoration:none;color:var(--sub);padding:14px 12px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs a[aria-current=page]{color:var(--ink);border-color:var(--ink)}
 
 /* 달력 */
 .calh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.calh b{font:800 26px/1 "Archivo",sans-serif}
+.calh b{font:var(--hw) 26px/1 var(--fh)}
 .calh button{width:44px;height:44px;border:1px solid var(--line);background:none;font-size:18px;cursor:pointer}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-left:1px solid var(--line);border-top:1px solid var(--line)}
 .cal>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:104px;padding:6px 8px;display:flex;flex-direction:column;gap:4px}
-.cal .wd{min-height:auto;font:600 11px/1 "Archivo",sans-serif;letter-spacing:.08em;color:var(--sub);padding:10px 8px}
-.cal .dn{font:600 13px/1 "Archivo",sans-serif;color:var(--sub)}
+.cal .wd{min-height:auto;font:var(--lw) 11px/1 var(--fh);letter-spacing:.08em;color:var(--sub);padding:10px 8px}
+.cal .dn{font:var(--lw) 13px/1 var(--fh);color:var(--sub)}
 .cal .today .dn{color:var(--bg);background:var(--ink);align-self:flex-start;padding:3px 5px}
 .cal .x{opacity:.25}
 .ce{font-size:12px;line-height:1.35;background:var(--ink);color:var(--bg);padding:4px 6px;text-decoration:none;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
@@ -112,17 +116,17 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .pg img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s}
 .pg a:hover img{opacity:.85}
 .blk{margin-top:48px}
-.blk h2{font:800 20px/1 "Archivo",sans-serif;letter-spacing:.06em;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.blk h2{font:var(--hw) 20px/1 var(--fh);letter-spacing:.06em;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .set{margin:0;padding-left:2.2em;font-size:17px;line-height:2}
-.set li::marker{font-family:"Archivo",sans-serif;color:var(--sub)}
+.set li::marker{font-family:var(--fh);color:var(--sub)}
 .yt{display:grid;gap:16px}
 .yt iframe{width:100%;aspect-ratio:16/9;border:0;background:#000;display:block}
 .ldt{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
-.ldt b{font:800 clamp(40px,7vw,72px)/1 "Archivo",sans-serif}
+.ldt b{font:var(--hw) clamp(40px,7vw,72px)/1 var(--fh)}
 .facts{margin:24px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 24px}
-.facts dt{font:600 12px/1.9 "Archivo",sans-serif;letter-spacing:.1em;color:var(--sub)}
+.facts dt{font:var(--lw) 12px/1.9 var(--fh);letter-spacing:.1em;color:var(--sub)}
 .facts dd{margin:0}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:700 14px/1 "Archivo","Noto Sans KR",sans-serif;letter-spacing:.06em;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:var(--lw) 14px/1 var(--fh);letter-spacing:.06em;text-decoration:none;cursor:pointer;white-space:nowrap}
 .btn.ol{background:transparent;color:var(--ink)}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
@@ -132,16 +136,16 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .ppl figure{margin:0}
 .ppl .im{aspect-ratio:4/5;background:var(--card);overflow:hidden;display:grid;place-items:center}
 .ppl img{width:100%;height:100%;object-fit:cover}
-.ppl .im span{font:800 64px/1 "Archivo",sans-serif;color:#2a2a2a}
+.ppl .im span{font:var(--hw) 64px/1 var(--fh);color:var(--line2)}
 .ppl h3{margin:14px 0 0;font-size:20px}
-.ppl .pt{font:600 12px/1.6 "Archivo",sans-serif;letter-spacing:.1em;color:var(--sub)}
-.ppl p{margin:8px 0 0;font-size:15px;white-space:pre-wrap;color:#cfcfcd}
-.hid{font-size:12px;border:1px dashed var(--acc);color:var(--acc);padding:2px 6px;margin-left:6px;vertical-align:middle}
+.ppl .pt{font:var(--lw) 12px/1.6 var(--fh);letter-spacing:.1em;color:var(--sub)}
+.ppl p{margin:8px 0 0;font-size:15px;white-space:pre-wrap;color:var(--ink2)}
+.hid{font-size:12px;border:1px dashed #9bbf00;color:var(--ink);padding:2px 6px;margin-left:6px;vertical-align:middle}
 .disc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:36px 24px}
 .disc a{text-decoration:none}
 .cv{aspect-ratio:1;background:var(--card);overflow:hidden;display:grid;place-items:center}
 .cv img{width:100%;height:100%;object-fit:cover;display:block}
-.cv span{font:800 28px/1.1 "Archivo",sans-serif;color:#333;padding:16px;text-align:center}
+.cv span{font:var(--hw) 28px/1.1 var(--fh);color:var(--line2);padding:16px;text-align:center}
 .disc h3{margin:12px 0 0;font-size:17px;line-height:1.4}
 .disc a:hover h3{text-decoration:underline;text-underline-offset:4px}
 .alb{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,5vw,64px);align-items:start}
@@ -151,20 +155,20 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .rel h3{font-size:clamp(22px,3vw,30px);margin:6px 0 0;line-height:1.3}
 
 /* CONTACT */
-.mail{font:800 clamp(22px,4.4vw,44px)/1.2 "Archivo",sans-serif;overflow-wrap:anywhere;text-decoration:none;display:inline-block;margin:8px 0 20px}
+.mail{font:var(--hw) clamp(22px,4.4vw,44px)/1.2 var(--fh);overflow-wrap:anywhere;text-decoration:none;display:inline-block;margin:8px 0 20px}
 .mail:hover{text-decoration:underline;text-underline-offset:6px}
 .sns{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 
 footer{border-top:1px solid var(--line);padding:40px 0 calc(40px + env(safe-area-inset-bottom));font-size:13px;color:var(--sub)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;justify-content:space-between;align-items:center}
-footer a{text-decoration:none;font:600 12px/1 "Archivo",sans-serif;letter-spacing:.1em;padding:8px 0}
+footer a{text-decoration:none;font:var(--lw) 12px/1 var(--fh);letter-spacing:.1em;padding:8px 0}
 footer a:hover{color:var(--ink)}
 .empty{color:var(--sub);padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 
 /* 편집 */
-.eb{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px dashed var(--acc);background:transparent;color:var(--acc);font:600 13px/1 "Noto Sans KR",sans-serif;cursor:pointer;white-space:nowrap;margin:0 6px 6px 0}
-.ebar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:40;background:var(--acc);color:#0a0a0a;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 16px;font-size:13px;font-weight:700;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.6)}
-.ebar button{border:0;background:#0a0a0a;color:var(--acc);font-weight:700;font-size:12px;min-height:34px;padding:0 10px;cursor:pointer}
+.eb{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px dashed #9bbf00;background:color-mix(in srgb,#d7ff3a 12%,transparent);color:var(--ink);font:600 13px/1 var(--fb);cursor:pointer;white-space:nowrap;margin:0 6px 6px 0}
+.ebar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:40;background:#d7ff3a;color:#0a0a0a;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 16px;font-size:13px;font-weight:700;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.ebar button{border:0;background:#0a0a0a;color:#d7ff3a;font-weight:700;font-size:12px;min-height:34px;padding:0 10px;cursor:pointer}
 dialog{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0;width:min(680px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
 dialog::backdrop{background:rgba(0,0,0,.75)}
 .dh{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);z-index:1}
@@ -173,7 +177,7 @@ dialog::backdrop{background:rgba(0,0,0,.75)}
 .fb{padding:20px;display:flex;flex-direction:column;gap:16px}
 .fl{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500}
 .fl small{color:var(--sub);font-weight:400}
-.fl input:not([type=checkbox]):not([type=file]),.fl select,.fl textarea{min-height:46px;background:var(--bg);border:1px solid #3a3a3a;padding:10px 12px;font-size:16px;font-weight:400;width:100%}
+.fl input:not([type=checkbox]):not([type=file]),.fl select,.fl textarea{min-height:46px;background:var(--bg);border:1px solid var(--line2);padding:10px 12px;font-size:16px;font-weight:400;width:100%}
 .fl textarea{min-height:120px;resize:vertical;line-height:1.6}
 .fl.ck{flex-direction:row;align-items:center;gap:10px}
 .fl.ck input{width:22px;height:22px;accent-color:var(--acc)}
@@ -183,8 +187,25 @@ dialog::backdrop{background:rgba(0,0,0,.75)}
 .th button{position:absolute;right:3px;top:3px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;cursor:pointer}
 .ferr{color:#ff8a80;margin:0;font-size:14px;min-height:1.2em}
 .del.arm{background:#d6372b;border-color:#d6372b;color:#fff}
+.dz h3{margin:6px 0 0;font-size:15px}
+.dz .sm{font-size:13px;color:var(--sub);margin:0}
+.fo{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+.fo label{display:block;border:1px solid var(--line2);padding:12px;cursor:pointer;position:relative}
+.fo input{position:absolute;opacity:0}
+.fo label:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.fo label:has(input:focus-visible){outline:2px solid #d7ff3a;outline-offset:2px}
+.fo .pv{display:block;font-size:24px;line-height:1.15;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.fo .pvb{display:block;font-size:15px;line-height:1.5}
+.fo small{display:block;margin-top:6px;font:12px/1.3 system-ui,sans-serif;color:var(--sub)}
+.sw{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sw label{width:44px;height:44px;border:1px solid var(--line2);cursor:pointer;position:relative;display:block}
+.sw input{position:absolute;opacity:0}
+.sw label:has(input:checked){outline:2px solid var(--ink);outline-offset:2px}
+.sw input[type=color]{position:static;opacity:1;width:44px;height:44px;border:1px solid var(--line2);background:none;padding:2px;cursor:pointer}
+.seg{display:flex;gap:8px}.seg label{flex:1;border:1px solid var(--line2);padding:12px;text-align:center;cursor:pointer}
+.seg input{position:absolute;opacity:0}.seg label:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .gate{max-width:420px;display:flex;flex-direction:column;gap:14px}
-.gate input{min-height:52px;background:var(--card);border:1px solid #3a3a3a;padding:0 16px;font-size:18px}
+.gate input{min-height:52px;background:var(--card);border:1px solid var(--line2);padding:0 16px;font-size:18px}
 @media(max-width:600px){
   .nrow{grid-template-columns:minmax(0,1fr);gap:4px;padding:16px 0}
   .lrow{grid-template-columns:76px minmax(0,1fr);gap:14px;padding:18px 0}
@@ -200,6 +221,7 @@ dialog::backdrop{background:rgba(0,0,0,.75)}
   .facts dd{margin-bottom:10px}
   dialog{width:100%;max-width:100%;margin:auto 0 0;max-height:92dvh}
   .ppl,.disc{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 14px}
+  .fo{grid-template-columns:repeat(2,minmax(0,1fr))}.fo .pv{font-size:18px}.fo .pvb{font-size:13px}.fo label{padding:10px}
   .ppl h3{font-size:17px}.ppl p{font-size:14px}.disc h3{font-size:15px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -230,7 +252,7 @@ const SUPABASE_KEY = 'sb_publishable_GwF9Qvd8NFwObGYqogKgpw_OPrwFRwU';
   </div>
 </footer>
 
-<div class="ebar" id="ebar" hidden>편집 모드<button id="eCode">편집 코드 바꾸기</button><button id="eOff">편집 끄기</button></div>
+<div class="ebar" id="ebar" hidden>편집 모드<button id="eDesign">디자인</button><button id="eCode">편집 코드</button><button id="eOff">편집 끄기</button></div>
 
 <dialog id="dlg"><form id="frm" novalidate>
   <div class="dh"><h2 id="dTitle"></h2><button type="button" class="x" data-close aria-label="닫기">×</button></div>
@@ -256,6 +278,67 @@ let sb=null,me=null,editor=false,editOn=false,calM=null;
 let S={settings:{},news:[],lives:[],people:[],albums:[]};
 const pub=p=>p?sb.storage.from('hp').getPublicUrl(p).data.publicUrl:'';
 const band=()=>S.settings.band_name||'ELECTRODIVE 12';
+
+/* ---------- 디자인 (글씨체, 색) ---------- */
+// [이름, 불러올 굵기, 제목 굵기, 작은 글씨 굵기, 설명]
+const HEADS=[['Archivo','600;800',800,600,'단단한 산세리프 (기본)'],['Anton','',400,400,'길쭉하고 굵은 포스터체'],['Bebas Neue','',400,400,'좁고 높은 대문자체'],
+  ['Oswald','500;700',700,500,'좁은 고딕'],['Archivo Black','',400,400,'아주 굵은 산세리프'],['Space Grotesk','500;700',700,500,'개성 있는 기하학 고딕'],
+  ['Syne','600;800',800,600,'넓고 실험적인'],['Unbounded','500;800',800,500,'둥글고 넓은'],['Space Mono','400;700',700,400,'타자기 같은 고정폭'],
+  ['Playfair Display','600;900',900,600,'우아한 세리프'],['DM Serif Display','',400,400,'굵은 세리프'],['Instrument Serif','',400,400,'가는 세리프'],
+  ['Black Han Sans','',400,400,'한글 굵은 제목체'],['Do Hyeon','',400,400,'한글 각진 제목체']];
+const BODIES=[['Noto Sans KR','400;500;700',700,500,'깔끔한 고딕 (기본)'],['Nanum Gothic','400;700;800',800,700,'나눔고딕'],['Gothic A1','400;500;700',700,500,'단정한 고딕'],
+  ['IBM Plex Sans KR','400;500;700',700,500,'기계적인 고딕'],['Gowun Dodum','',400,400,'부드러운 고딕'],['Sunflower','300;500;700',700,500,'좁고 단단한 고딕'],
+  ['Noto Serif KR','400;600;700',700,600,'바른 명조'],['Nanum Myeongjo','400;700;800',800,700,'나눔명조'],['Gowun Batang','400;700',700,400,'부드러운 명조'],['Hahmlet','400;600;700',700,600,'현대적인 명조']];
+const ACCS=[['#d7ff3a','형광 라임'],['#ff3b30','레드'],['#ff7a00','오렌지'],['#ffd60a','옐로'],['#ff5fa2','핑크'],['#3d7bff','블루'],['#9670B5','보라'],['#ffffff','화이트'],['#121212','블랙']];
+const fam=(f,w)=>`family=${encodeURIComponent(f[0]).replace(/%20/g,'+')}${w&&f[1]?':wght@'+f[1]:''}`;
+const okHex=c=>/^#[0-9a-f]{6}$/i.test(c||'');
+function inkOn(hex){const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});
+  return .2126*c[0]+.7152*c[1]+.0722*c[2]>.35?'#0a0a0a':'#ffffff'}
+function design(d){ // d: {font_head,font_body,accent,theme}
+  const h=HEADS.find(x=>x[0]===d.font_head)||HEADS[0],b=BODIES.find(x=>x[0]===d.font_body)||BODIES[0],a=okHex(d.accent)?d.accent:'#d7ff3a';
+  const r=document.documentElement.style;
+  r.setProperty('--fh',`"${h[0]}","${b[0]}",sans-serif`);r.setProperty('--fb',`"${b[0]}",system-ui,sans-serif`);
+  r.setProperty('--hw',h[2]);r.setProperty('--lw',h[3]);r.setProperty('--acc',a);r.setProperty('--acc-ink',inkOn(a));
+  document.documentElement.dataset.theme=d.theme==='light'?'light':'dark';
+  document.querySelector('meta[name=theme-color]').content=d.theme==='light'?'#fafaf8':'#0a0a0a';
+  const url=`https://fonts.googleapis.com/css2?${fam(h,1)}&${fam(b,1)}&display=swap`;
+  if($('#gf').href!==url)$('#gf').href=url;
+}
+function openDesign(){
+  const st=S.settings,orig={font_head:st.font_head,font_body:st.font_body,accent:st.accent,theme:st.theme},cur={...orig};
+  // 미리보기용: 목록의 모든 글씨체를 견본 글자만 가볍게 불러오기
+  const sample=band()+'NEWS LIVE 0123456789 공연 섭외 및 문의는 아래 메일로 연락 주세요. 한글 제목체 굵은 각진 '+HEADS.concat(BODIES).map(f=>f[0]).join('');
+  const chars=[...new Set(sample)].join('');
+  $('#gfp').href=`https://fonts.googleapis.com/css2?${HEADS.concat(BODIES).map(f=>fam(f,1)).join('&')}&text=${encodeURIComponent(chars)}`;
+  F={k:null,fresh:[],saved:false};
+  const radio=(n,v,on)=>`<input type="radio" name="${n}" value="${esc(v)}" ${on?'checked':''}>`;
+  $('#dTitle').textContent='디자인';
+  $('#dBody').innerHTML=`<div class="dz fb" style="padding:0">
+    <p class="sm">고르는 대로 뒤 화면에 바로 적용돼요. 저장을 눌러야 방문자에게도 바뀌어요.</p>
+    <h3>제목 글씨체</h3><p class="sm">밴드 이름, 메뉴, NEWS·LIVE 같은 큰 제목. 영문 글씨체에 없는 한글은 본문 글씨체로 보여요.</p>
+    <div class="fo">${HEADS.map(f=>`<label>${radio('fh',f[0],f[0]===(cur.font_head||'Archivo'))}<span class="pv" style="font-family:'${f[0]}',sans-serif;font-weight:${f[2]}">${esc(band())}</span><small>${f[0]} · ${f[4]}</small></label>`).join('')}</div>
+    <h3>본문 글씨체</h3><p class="sm">소식, 공연일기, 소개글 같은 긴 글.</p>
+    <div class="fo">${BODIES.map(f=>`<label>${radio('fb',f[0],f[0]===(cur.font_body||'Noto Sans KR'))}<span class="pvb" style="font-family:'${f[0]}',sans-serif">공연 섭외 및 문의는 아래 메일로 연락 주세요.</span><small>${f[0]} · ${f[4]}</small></label>`).join('')}</div>
+    <h3>포인트 색</h3><p class="sm">NEXT 표시, 달력의 공연 표시에 쓰여요.</p>
+    <div class="sw">${ACCS.map(([c,n])=>`<label title="${n}" style="background:${c}">${radio('ac',c,c.toLowerCase()===(cur.accent||'#d7ff3a').toLowerCase())}<span class="vh" style="position:absolute;opacity:0">${n}</span></label>`).join('')}
+      <input type="color" id="acCustom" value="${okHex(cur.accent)?cur.accent:'#d7ff3a'}" aria-label="직접 고르기" title="직접 고르기"></div>
+    <h3>배경</h3><div class="seg"><label>${radio('th','dark',(cur.theme||'dark')==='dark')}검정 배경</label><label>${radio('th','light',cur.theme==='light')}흰 배경</label></div>
+    <p class="ferr" id="fErr"></p>
+    <div class="row" style="justify-content:space-between"><button type="button" class="btn ol" id="dzReset">기본값으로</button>
+      <span class="row"><button type="button" class="btn ol" data-close>취소</button><button type="button" class="btn" id="dzSave">저장</button></span></div></div>`;
+  const pick=()=>{const f=$('#frm');cur.font_head=f.fh.value;cur.font_body=f.fb.value;cur.theme=f.th.value;
+    const ac=[...f.querySelectorAll('[name=ac]')].find(x=>x.checked);if(ac)cur.accent=ac.value;design(cur)};
+  $('#dBody').oninput=e=>{if(e.target.id==='acCustom'){[...document.querySelectorAll('[name=ac]')].forEach(x=>x.checked=false);cur.accent=e.target.value;design(cur);return}pick()};
+  $('#dzReset').onclick=()=>{Object.assign(cur,{font_head:'Archivo',font_body:'Noto Sans KR',accent:'#d7ff3a',theme:'dark'});
+    const f=$('#frm');f.fh.value='Archivo';f.fb.value='Noto Sans KR';f.th.value='dark';[...f.querySelectorAll('[name=ac]')].forEach(x=>x.checked=x.value==='#d7ff3a');design(cur)};
+  $('#dzSave').onclick=async()=>{$('#dzSave').disabled=true;
+    const {data,error}=await sb.from('hp_settings').update({font_head:cur.font_head||'Archivo',font_body:cur.font_body||'Noto Sans KR',accent:okHex(cur.accent)?cur.accent:'#d7ff3a',theme:cur.theme||'dark'}).eq('id',1).select();
+    $('#dzSave').disabled=false;
+    if(error||!data?.length){$('#fErr').textContent=/column/i.test(error?.message||'')?'데이터베이스 업데이트가 필요해요. 새 homepage.sql을 한 번 실행해 주세요.':'저장하지 못했어요.';return}
+    F.saved=true;S.settings=data[0];$('#dlg').close()};
+  $('#dlg').addEventListener('close',()=>{if(!F.saved)design(S.settings)},{once:true});
+  $('#dlg').showModal();
+}
 
 /* ---------- 편집 버튼 ---------- */
 const eNew=(k,label)=>editOn?`<button class="eb" data-new="${k}">${label}</button>`:'';
@@ -324,7 +407,7 @@ function pLiveOne(id){
   const d=D(l.date),up=l.date>=today(),tk=safeUrl(l.ticket_url);
   const vids=(l.youtube||[]).map(ytId).filter(Boolean);
   app.innerHTML=`<div class="wrap ph pbody"><article class="art">
-    <div class="ldt"><b>${d.full}</b><span class="dt">${d.w}</span>${up?'<i class="nx" style="font:600 11px/1 Archivo,sans-serif;letter-spacing:.1em">UPCOMING</i>':''}</div>
+    <div class="ldt"><b>${d.full}</b><span class="dt">${d.w}</span>${up?'<i class="nx" style="font:var(--lw) 11px/1 var(--fh);letter-spacing:.1em">UPCOMING</i>':''}</div>
     <h1>${esc(l.title)}</h1>${editOn?`<div style="margin-top:12px">${eEdit('live',l.id)}</div>`:''}
     <dl class="facts">${l.venue?`<dt>VENUE</dt><dd>${esc(l.venue)}</dd>`:''}${l.time?`<dt>TIME</dt><dd>${esc(l.time)}</dd>`:''}</dl>
     ${tk&&up?`<div class="row" style="margin-top:24px"><a class="btn" href="${esc(tk)}" target="_blank" rel="noopener">TICKET →</a></div>`:''}
@@ -359,7 +442,7 @@ function pAlbum(id){
     ${editOn?`<div style="margin-top:12px">${eEdit('album',a.id)}</div>`:''}
     ${buy||st.length?`<div class="row" style="margin-top:24px">${buy?`<a class="btn" href="${esc(buy)}" target="_blank" rel="noopener">BUY →</a>`:''}${st.map(s=>`<a class="btn ol" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener">${esc(s.label||'LISTEN')}</a>`).join('')}</div>`:''}
     ${a.tracks?.length?`<section class="blk"><h2>TRACKLIST</h2><ol class="trk">${a.tracks.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></section>`:''}
-    ${a.credits?`<section class="blk"><h2>CREDITS</h2><div class="body" style="margin:0;color:#cfcfcd;font-size:15px">${linkify(a.credits)}</div></section>`:''}
+    ${a.credits?`<section class="blk"><h2>CREDITS</h2><div class="body" style="margin:0;color:var(--ink2);font-size:15px">${linkify(a.credits)}</div></section>`:''}
   </div></div><a class="back" href="#/discography">← DISCOGRAPHY</a></div>`;
   return a.title;
 }
@@ -426,6 +509,7 @@ async function load(){
     sb.from('hp_albums').select('*').order('release_date',{ascending:false,nullsFirst:false})]);
   if(s.error&&n.error){app.innerHTML=head('ERROR')+`<div class="wrap pbody"><p class="sub">홈페이지 내용을 불러오지 못했어요. 잠시 뒤 새로고침 해주세요.</p></div>`;return false}
   S={settings:s.data||{},news:n.data||[],lives:l.data||[],people:p.data||[],albums:a.data||[]};
+  design(S.settings);
   return true;
 }
 
@@ -519,6 +603,7 @@ document.addEventListener('click',e=>{
   const c=e.target.closest('[data-close]');if(c){c.closest('dialog').close();return}
   const n=e.target.closest('[data-new]');if(n){openForm(n.dataset.new);return}
   const d=e.target.closest('[data-edit]');if(d){openForm(d.dataset.edit,d.dataset.edit==='settings'?1:d.dataset.id)}});
+$('#eDesign').addEventListener('click',openDesign);
 $('#eOff').addEventListener('click',()=>{editOn=false;ls.set('hpEdit','0');route(true)});
 $('#eCode').addEventListener('click',async()=>{
   F={k:null,fresh:[],saved:true};
