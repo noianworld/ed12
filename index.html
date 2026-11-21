@@ -112,7 +112,7 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .cal .wd{min-height:auto;font:var(--lw) 11px/1 var(--fh);letter-spacing:.08em;color:var(--sub);padding:10px 8px}
 .cal .dn{font:var(--lw) 13px/1 var(--fh);color:var(--sub)}
 .cal .today .dn{color:var(--bg);background:var(--ink);align-self:flex-start;padding:3px 5px}
-.cal .x{opacity:.25}
+.cal .emp{background:color-mix(in srgb,var(--line) 30%,transparent)}
 .ce{font-size:12px;line-height:1.35;background:var(--ink);color:var(--bg);padding:4px 6px;text-decoration:none;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .calm{margin-top:28px}
 
@@ -436,10 +436,10 @@ function calendar(){
   if(!calM){const d=new Date();calM={y:d.getFullYear(),m:d.getMonth()}}
   const {y,m}=calM,first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),t=today();
   const key=d=>`${y}-${pad(m+1)}-${pad(d)}`;
-  const cells=[];for(let i=0;i<first;i++)cells.push('<div class="x"></div>');
+  const cells=[];for(let i=0;i<first;i++)cells.push('<div class="emp"></div>');
   for(let d=1;d<=days;d++){const ls_=S.lives.filter(l=>l.date===key(d));
     cells.push(`<div class="${key(d)===t?'today':''}"><span class="dn">${d}</span>${ls_.map(l=>`<a class="ce" href="#/live/${l.id}" title="${esc(l.title)}">${esc(l.title)}</a>`).join('')}</div>`)}
-  while(cells.length%7)cells.push('<div class="x"></div>');
+  while(cells.length%7)cells.push('<div class="emp"></div>');
   const month=S.lives.filter(l=>l.date.startsWith(`${y}-${pad(m+1)}`));
   return `<div class="calh"><button data-cal="-1" aria-label="이전 달">‹</button><b>${y}.${pad(m+1)}</b><button data-cal="1" aria-label="다음 달">›</button></div>
     <div class="cal">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${cells.join('')}</div>
