@@ -55,8 +55,10 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.1) 55%)}
 .hero .t{position:relative;z-index:1;width:100%;padding-bottom:clamp(32px,6vw,72px)}
-.hero h1{font:var(--hw) clamp(40px,9.5vw,128px)/.9 var(--fh);margin:0;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
+.hero h1{font:var(--hw) calc(clamp(40px,9.5vw,128px)*var(--hs,1))/.9 var(--fh);margin:0;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
 .hero p{margin:18px 0 0;font-size:clamp(16px,2vw,20px);max-width:36em}
+.hero[data-fit] h1{white-space:nowrap;text-wrap:nowrap}
+.hero[data-al=center] .t{text-align:center}.hero[data-al=center] p{margin-left:auto;margin-right:auto}
 .sec{padding:clamp(48px,7vw,88px) 0;border-top:1px solid var(--line)}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
 .sec-h h2{font:var(--hw) clamp(28px,4vw,44px)/1 var(--fh);margin:0}
@@ -171,6 +173,9 @@ footer a:hover{color:var(--ink)}
 .ebar button{border:0;background:#0a0a0a;color:#d7ff3a;font-weight:700;font-size:12px;min-height:34px;padding:0 10px;cursor:pointer}
 dialog{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0;width:min(680px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
 dialog::backdrop{background:rgba(0,0,0,.75)}
+dialog.side{margin:0 0 0 auto;height:100dvh;max-height:100dvh;width:min(460px,100vw);border-width:0 0 0 1px}
+dialog.side::backdrop{background:rgba(0,0,0,.2)}
+.rng{display:flex;align-items:center;gap:12px}.rng input{flex:1;accent-color:var(--ink);height:44px}.rng b{min-width:3.5em;text-align:right;font-variant-numeric:tabular-nums}
 .dh{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);z-index:1}
 .dh h2{margin:0;font-size:18px}
 .x{width:44px;height:44px;border:0;background:none;font-size:22px;cursor:pointer}
@@ -220,6 +225,7 @@ dialog::backdrop{background:rgba(0,0,0,.75)}
   .facts{grid-template-columns:minmax(0,1fr);gap:0}
   .facts dd{margin-bottom:10px}
   dialog{width:100%;max-width:100%;margin:auto 0 0;max-height:92dvh}
+  dialog.side{height:auto;max-height:58dvh;border-width:1px 0 0}
   .ppl,.disc{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 14px}
   .fo{grid-template-columns:repeat(2,minmax(0,1fr))}.fo .pv{font-size:18px}.fo .pvb{font-size:13px}.fo label{padding:10px}
   .ppl h3{font-size:17px}.ppl p{font-size:14px}.disc h3{font-size:15px}
@@ -294,18 +300,32 @@ const fam=(f,w)=>`family=${encodeURIComponent(f[0]).replace(/%20/g,'+')}${w&&f[1
 const okHex=c=>/^#[0-9a-f]{6}$/i.test(c||'');
 function inkOn(hex){const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});
   return .2126*c[0]+.7152*c[1]+.0722*c[2]>.35?'#0a0a0a':'#ffffff'}
-function design(d){ // d: {font_head,font_body,accent,theme}
+let DZ={};
+function fitHero(){
+  const h=document.querySelector('.hero h1');if(!h)return;const hero=h.closest('.hero'),auto=!(+DZ.hero_size);
+  hero.toggleAttribute('data-fit',auto);hero.dataset.al=DZ.hero_align==='center'?'center':'left';
+  if(!auto){h.style.fontSize='';return}
+  const box=h.parentElement,cs=getComputedStyle(box),avail=box.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  h.style.fontSize='100px';h.style.display='inline-block';const w=h.getBoundingClientRect().width||1;h.style.display='';
+  h.style.fontSize=Math.max(24,Math.min(240,Math.floor(100*avail/w*.99)))+'px';
+}
+window.addEventListener('resize',fitHero);
+document.fonts?.addEventListener?.('loadingdone',fitHero);
+function design(d){ // d: {font_head,font_body,accent,theme,hero_size,hero_align}
+  DZ=d;
   const h=HEADS.find(x=>x[0]===d.font_head)||HEADS[0],b=BODIES.find(x=>x[0]===d.font_body)||BODIES[0],a=okHex(d.accent)?d.accent:'#d7ff3a';
   const r=document.documentElement.style;
   r.setProperty('--fh',`"${h[0]}","${b[0]}",sans-serif`);r.setProperty('--fb',`"${b[0]}",system-ui,sans-serif`);
+  r.setProperty('--hs',((+d.hero_size||100)/100).toFixed(2));
   r.setProperty('--hw',h[2]);r.setProperty('--lw',h[3]);r.setProperty('--acc',a);r.setProperty('--acc-ink',inkOn(a));
   document.documentElement.dataset.theme=d.theme==='light'?'light':'dark';
   document.querySelector('meta[name=theme-color]').content=d.theme==='light'?'#fafaf8':'#0a0a0a';
   const url=`https://fonts.googleapis.com/css2?${fam(h,1)}&${fam(b,1)}&display=swap`;
   if($('#gf').href!==url)$('#gf').href=url;
+  fitHero();
 }
 function openDesign(){
-  const st=S.settings,orig={font_head:st.font_head,font_body:st.font_body,accent:st.accent,theme:st.theme},cur={...orig};
+  const st=S.settings,orig={font_head:st.font_head,font_body:st.font_body,accent:st.accent,theme:st.theme,hero_size:st.hero_size??0,hero_align:st.hero_align||'left'},cur={...orig};
   // 미리보기용: 목록의 모든 글씨체를 견본 글자만 가볍게 불러오기
   const sample=band()+'NEWS LIVE 0123456789 공연 섭외 및 문의는 아래 메일로 연락 주세요. 한글 제목체 굵은 각진 '+HEADS.concat(BODIES).map(f=>f[0]).join('');
   const chars=[...new Set(sample)].join('');
@@ -315,6 +335,10 @@ function openDesign(){
   $('#dTitle').textContent='디자인';
   $('#dBody').innerHTML=`<div class="dz fb" style="padding:0">
     <p class="sm">고르는 대로 뒤 화면에 바로 적용돼요. 저장을 눌러야 방문자에게도 바뀌어요.</p>
+    <h3 id="dzHero">메인 제목 크기</h3><p class="sm">메인 사진 위의 밴드 이름.</p>
+    <div class="seg"><label>${radio('hm','auto',!(+cur.hero_size))}한 줄에 꽉 맞추기</label><label>${radio('hm','manual',+cur.hero_size>0)}직접 조절</label></div>
+    <div class="rng" id="hsRow" ${+cur.hero_size?'':'hidden'}><input type="range" id="hs" min="30" max="140" step="5" value="${+cur.hero_size||100}" aria-label="제목 크기"><b id="hsv">${+cur.hero_size||100}%</b></div>
+    <h3>메인 제목 정렬</h3><div class="seg"><label>${radio('ha','left',cur.hero_align!=='center')}왼쪽</label><label>${radio('ha','center',cur.hero_align==='center')}가운데</label></div>
     <h3>제목 글씨체</h3><p class="sm">밴드 이름, 메뉴, NEWS·LIVE 같은 큰 제목. 영문 글씨체에 없는 한글은 본문 글씨체로 보여요.</p>
     <div class="fo">${HEADS.map(f=>`<label>${radio('fh',f[0],f[0]===(cur.font_head||'Archivo'))}<span class="pv" style="font-family:'${f[0]}',sans-serif;font-weight:${f[2]}">${esc(band())}</span><small>${f[0]} · ${f[4]}</small></label>`).join('')}</div>
     <h3>본문 글씨체</h3><p class="sm">소식, 공연일기, 소개글 같은 긴 글.</p>
@@ -327,17 +351,19 @@ function openDesign(){
     <div class="row" style="justify-content:space-between"><button type="button" class="btn ol" id="dzReset">기본값으로</button>
       <span class="row"><button type="button" class="btn ol" data-close>취소</button><button type="button" class="btn" id="dzSave">저장</button></span></div></div>`;
   const pick=()=>{const f=$('#frm');cur.font_head=f.fh.value;cur.font_body=f.fb.value;cur.theme=f.th.value;
+    const auto=f.hm.value==='auto';cur.hero_size=auto?0:+$('#hs').value;$('#hsRow').hidden=auto;$('#hsv').textContent=$('#hs').value+'%';cur.hero_align=f.ha.value;
     const ac=[...f.querySelectorAll('[name=ac]')].find(x=>x.checked);if(ac)cur.accent=ac.value;design(cur)};
   $('#dBody').oninput=e=>{if(e.target.id==='acCustom'){[...document.querySelectorAll('[name=ac]')].forEach(x=>x.checked=false);cur.accent=e.target.value;design(cur);return}pick()};
-  $('#dzReset').onclick=()=>{Object.assign(cur,{font_head:'Archivo',font_body:'Noto Sans KR',accent:'#d7ff3a',theme:'dark'});
-    const f=$('#frm');f.fh.value='Archivo';f.fb.value='Noto Sans KR';f.th.value='dark';[...f.querySelectorAll('[name=ac]')].forEach(x=>x.checked=x.value==='#d7ff3a');design(cur)};
+  $('#dzReset').onclick=()=>{Object.assign(cur,{font_head:'Archivo',font_body:'Noto Sans KR',accent:'#d7ff3a',theme:'dark',hero_size:0,hero_align:'left'});
+    const f=$('#frm');f.fh.value='Archivo';f.fb.value='Noto Sans KR';f.th.value='dark';f.hm.value='auto';f.ha.value='left';$('#hsRow').hidden=true;[...f.querySelectorAll('[name=ac]')].forEach(x=>x.checked=x.value==='#d7ff3a');design(cur)};
   $('#dzSave').onclick=async()=>{$('#dzSave').disabled=true;
-    const {data,error}=await sb.from('hp_settings').update({font_head:cur.font_head||'Archivo',font_body:cur.font_body||'Noto Sans KR',accent:okHex(cur.accent)?cur.accent:'#d7ff3a',theme:cur.theme||'dark'}).eq('id',1).select();
+    const {data,error}=await sb.from('hp_settings').update({font_head:cur.font_head||'Archivo',font_body:cur.font_body||'Noto Sans KR',accent:okHex(cur.accent)?cur.accent:'#d7ff3a',theme:cur.theme||'dark',hero_size:+cur.hero_size||0,hero_align:cur.hero_align==='center'?'center':'left'}).eq('id',1).select();
     $('#dzSave').disabled=false;
     if(error||!data?.length){$('#fErr').textContent=/column/i.test(error?.message||'')?'데이터베이스 업데이트가 필요해요. 새 homepage.sql을 한 번 실행해 주세요.':'저장하지 못했어요.';return}
     F.saved=true;S.settings=data[0];$('#dlg').close()};
   $('#dlg').addEventListener('close',()=>{if(!F.saved)design(S.settings)},{once:true});
-  $('#dlg').showModal();
+  if(location.hash.replace(/^#\/?/,'')==='')window.scrollTo(0,0);
+  $('#dlg').classList.add('side');$('#dlg').showModal();$('#dlg').scrollTop=0;
 }
 
 /* ---------- 편집 버튼 ---------- */
@@ -361,7 +387,7 @@ function pTop(){
   const st=S.settings,t=today(),up=S.lives.filter(l=>l.date>=t).slice(0,3),al=S.albums[0];
   app.innerHTML=`
   <section class="hero">${st.hero_photo?`<img src="${esc(pub(st.hero_photo))}" alt="${esc(band())}">`:''}
-    <div class="wrap t"><h1>${esc(band())}</h1>${st.tagline?`<p>${esc(st.tagline)}</p>`:''}${editOn?`<div style="margin-top:16px">${eEdit('settings',1,'메인 사진 · 소개 수정')}</div>`:''}</div></section>
+    <div class="wrap t"><h1>${esc(band())}</h1>${st.tagline?`<p>${esc(st.tagline)}</p>`:''}${editOn?`<div style="margin-top:16px">${eEdit('settings',1,'메인 사진 · 소개 수정')}<button class="eb" data-design="1">제목 크기 · 글씨체</button></div>`:''}</div></section>
   <section class="sec"><div class="wrap"><div class="sec-h"><h2>NEWS</h2><a class="more" href="#/news">MORE →</a></div>
     ${newsRows(S.news.slice(0,4))||empty('아직 소식이 없어요.')}</div></section>
   <section class="sec"><div class="wrap"><div class="sec-h"><h2>LIVE</h2><a class="more" href="#/live">SCHEDULE →</a></div>
@@ -491,7 +517,7 @@ function route(keepScroll){
   const R={'':pTop,news:pNews,live:pLive,biography:pBio,discography:pDisco,contact:pContact,edit:pEdit};
   const t=(R[pg]||pMissing)(id?decodeURIComponent(id):undefined);
   document.title=t?`${t} | ${band()}`:band();
-  chrome(pg);document.body.classList.remove('mo');$('#burger').setAttribute('aria-expanded','false');
+  chrome(pg);fitHero();document.body.classList.remove('mo');$('#burger').setAttribute('aria-expanded','false');
   if(!keepScroll)window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',()=>route(false));
@@ -546,6 +572,13 @@ function openForm(k,id){
     <span>${row&&k!=='settings'?'<button type="button" class="btn ol del" id="fDel">삭제</button>':''}</span>
     <span class="row"><button type="button" class="btn ol" data-close>취소</button><button class="btn" id="fSave">저장</button></span></div>`;
   for(const name in F.pics)drawPics(name);
+  $('#dlg').classList.toggle('side',k==='settings');
+  if(k==='settings'){const el=$('#frm').elements;
+    const live=()=>{const h=document.querySelector('.hero h1');if(!h)return;h.textContent=el.band_name.value||' ';
+      let p=document.querySelector('.hero .t p');const t=el.tagline.value.trim();
+      if(t&&!p){p=document.createElement('p');h.after(p)}if(p){p.textContent=t;p.hidden=!t}fitHero()};
+    el.band_name.addEventListener('input',live);el.tagline.addEventListener('input',live);
+    if(location.hash.replace(/^#\/?/,'')==='')window.scrollTo(0,0)}
   $('#dlg').showModal();
 }
 function drawPics(name){
@@ -598,10 +631,11 @@ $('#frm').addEventListener('submit',async e=>{
   const go={news:'#/news/',live:'#/live/',album:'#/discography/'}[F.k];
   if(!F.row&&go)location.hash=go+out[0].id;else route(true);
 });
-$('#dlg').addEventListener('close',()=>{if(F&&!F.saved&&F.fresh.length)sb.storage.from('hp').remove(F.fresh)});
+$('#dlg').addEventListener('close',()=>{if(F&&!F.saved&&F.fresh.length)sb.storage.from('hp').remove(F.fresh);if(F?.k==='settings'&&!F.saved)route(true)});
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-close]');if(c){c.closest('dialog').close();return}
   const n=e.target.closest('[data-new]');if(n){openForm(n.dataset.new);return}
+  if(e.target.closest('[data-design]')){openDesign();return}
   const d=e.target.closest('[data-edit]');if(d){openForm(d.dataset.edit,d.dataset.edit==='settings'?1:d.dataset.id)}});
 $('#eDesign').addEventListener('click',openDesign);
 $('#eOff').addEventListener('click',()=>{editOn=false;ls.set('hpEdit','0');route(true)});
