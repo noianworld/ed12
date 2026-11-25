@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://electrodive12.com/sitemap.xml
