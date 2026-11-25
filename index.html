@@ -4,10 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
-<title>ELECTRODIVE 12</title>
-<meta name="description" content="ELECTRODIVE 12 official website">
-<meta property="og:title" content="ELECTRODIVE 12">
+<title>ELECTRODIVE 12 (ED12) | 영원과 찰나를 노래하는 밴드</title>
+<!-- 검색·링크 미리보기용 정보. 도메인(electrodive12.com)을 연결하면 아래 주소 4곳(canonical, og:url, og:image, JSON-LD url·image)을 새 주소로 바꿔주세요. -->
+<meta name="description" content="영원과 찰나를 노래하는 밴드, ELECTRODIVE 12(ED12) 공식 홈페이지. 모던록 밴드 ED12의 공연 일정, 소식, 앨범, 멤버 소개.">
+<link rel="canonical" href="https://noianworld.github.io/ed12/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="ELECTRODIVE 12">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://noianworld.github.io/ed12/">
+<meta property="og:title" content="ELECTRODIVE 12 (ED12)">
+<meta property="og:description" content="영원과 찰나를 노래하는 밴드">
+<meta property="og:image" content="https://noianworld.github.io/ed12/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="무대에서 공연하는 ELECTRODIVE 12">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ELECTRODIVE 12 (ED12)">
+<meta name="twitter:description" content="영원과 찰나를 노래하는 밴드">
+<meta name="twitter:image" content="https://noianworld.github.io/ed12/og.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MusicGroup",
+ "name":"ELECTRODIVE 12","alternateName":["ED12","ElectroDive12","일렉트로다이브12"],
+ "description":"영원과 찰나를 노래하는 밴드","genre":["Modern Rock","Indie Rock"],
+ "url":"https://noianworld.github.io/ed12/","image":"https://noianworld.github.io/ed12/og.jpg",
+ "sameAs":["https://www.instagram.com/electrodive12/","https://www.youtube.com/@ElectroDive12"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link id="gf" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
@@ -20,7 +41,7 @@
    COLOUR and TYPE: 검정 바탕, 흰 글씨, 형광 라임은 NEXT 표시와 편집 버튼에만 / Archivo + Noto Sans KR
    LAYOUT: 위에 고정 메뉴, 섹션은 넓은 여백과 가는 선으로 나눔 */
 :root{color-scheme:dark;--bg:#0a0a0a;--ink:#f3f3f1;--ink2:#cfcfcd;--sub:#8e8e8e;--line:#262626;--line2:#3a3a3a;--card:#141414;--acc:#d7ff3a;--acc-ink:#0a0a0a;
-  --fh:var(--fh);--fb:var(--fb);--hw:800;--lw:600}
+  --fh:"Archivo","Noto Sans KR",sans-serif;--fb:"Noto Sans KR",system-ui,sans-serif;--hw:800;--lw:600}
 :root[data-theme=light]{color-scheme:light;--bg:#fafaf8;--ink:#121212;--ink2:#3a3a3a;--sub:#6e6e6e;--line:#e3e3df;--line2:#c9c9c4;--card:#efefeb}
 *{box-sizing:border-box;min-width:0}
 html{scroll-padding-top:80px}
@@ -257,7 +278,14 @@ const SUPABASE_KEY = 'sb_publishable_GwF9Qvd8NFwObGYqogKgpw_OPrwFRwU';
   </div>
 </header>
 
-<main id="app"><div class="wrap ph"><p class="sub">Loading…</p></div></main>
+<main id="app">
+  <!-- 자바스크립트를 실행하지 않는 검색봇·미리보기봇이 읽는 기본 내용. 페이지가 열리면 실제 내용으로 바로 바뀌어요. -->
+  <section class="hero"><div class="wrap t"><h1>ELECTRODIVE 12</h1><p>영원과 찰나를 노래하는 밴드</p></div></section>
+  <section class="sec"><div class="wrap"><div class="about">ELECTRODIVE 12(ED12, 일렉트로다이브12)는 영원과 찰나를 노래하는 대한민국의 모던록 밴드입니다.
+공연 일정과 소식, 앨범, 멤버 소개를 이 홈페이지에서 확인할 수 있어요.</div>
+    <div class="sns" style="margin-top:24px"><a class="btn ol" href="https://www.instagram.com/electrodive12/">Instagram</a><a class="btn ol" href="https://www.youtube.com/@ElectroDive12">YouTube</a></div>
+  </div></section>
+</main>
 
 <footer>
   <div class="wrap">
