@@ -528,7 +528,7 @@ function chrome(pg){
   const shop=safeUrl(S.settings.shop_url);
   $('#menu').innerHTML=NAV.map(([k,l])=>`<a href="#/${k}" ${pg===k?'aria-current="page"':''}>${l}</a>`).join('')+(shop?`<a href="${esc(shop)}" target="_blank" rel="noopener">SHOP ↗</a>`:'');
   $('#logo').textContent=band();
-  $('#fsns').innerHTML=links(S.settings.sns).map(s=>`<a href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener">${esc((s.label||'').toUpperCase())}</a>`).join('');
+  $('#fsns').innerHTML=links(S.settings.sns).map(s=>`<a href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener">${esc(s.label||s.url)}</a>`).join('');
   $('#copy').textContent=`© ${new Date().getFullYear()} ${band()}`;
   $('#ebar').hidden=!editOn;$('#editLink').hidden=editOn;
 }
