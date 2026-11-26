@@ -4,33 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
-<!-- 네이버 서치어드바이저 소유 확인. 지우지 마세요. -->
-<meta name="naver-site-verification" content="4ae0b38f0c4038844feb214224bc4cccec6ea3e4" />
-<title>ELECTRODIVE 12 (ED12) | 영원과 찰나를 노래하는 밴드</title>
-<!-- 검색·링크 미리보기용 정보. 주소를 바꾸면 canonical, og:url, og:image, JSON-LD의 url·image를 같이 바꿔주세요. -->
-<meta name="description" content="영원과 찰나를 노래하는 밴드, ELECTRODIVE 12(ED12) 공식 홈페이지. 모던록 밴드 ED12의 공연 일정, 소식, 앨범, 멤버 소개.">
-<link rel="canonical" href="https://electrodive12.com/">
+<title>ELECTRODIVE 12</title>
+<meta name="description" content="ELECTRODIVE 12 official website">
+<meta property="og:title" content="ELECTRODIVE 12">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="ELECTRODIVE 12">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:url" content="https://electrodive12.com/">
-<meta property="og:title" content="ELECTRODIVE 12 (ED12)">
-<meta property="og:description" content="영원과 찰나를 노래하는 밴드">
-<meta property="og:image" content="https://electrodive12.com/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="무대에서 공연하는 ELECTRODIVE 12">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ELECTRODIVE 12 (ED12)">
-<meta name="twitter:description" content="영원과 찰나를 노래하는 밴드">
-<meta name="twitter:image" content="https://electrodive12.com/og.jpg">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"MusicGroup",
- "name":"ELECTRODIVE 12","alternateName":["ED12","ElectroDive12","일렉트로다이브12"],
- "description":"영원과 찰나를 노래하는 밴드","genre":["Modern Rock","Indie Rock"],
- "url":"https://electrodive12.com/","image":"https://electrodive12.com/og.jpg",
- "sameAs":["https://www.instagram.com/electrodive12/","https://www.youtube.com/@ElectroDive12"]}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link id="gf" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
@@ -43,7 +20,7 @@
    COLOUR and TYPE: 검정 바탕, 흰 글씨, 형광 라임은 NEXT 표시와 편집 버튼에만 / Archivo + Noto Sans KR
    LAYOUT: 위에 고정 메뉴, 섹션은 넓은 여백과 가는 선으로 나눔 */
 :root{color-scheme:dark;--bg:#0a0a0a;--ink:#f3f3f1;--ink2:#cfcfcd;--sub:#8e8e8e;--line:#262626;--line2:#3a3a3a;--card:#141414;--acc:#d7ff3a;--acc-ink:#0a0a0a;
-  --fh:"Archivo","Noto Sans KR",sans-serif;--fb:"Noto Sans KR",system-ui,sans-serif;--hw:800;--lw:600}
+  --fh:var(--fh);--fb:var(--fb);--hw:800;--lw:600}
 :root[data-theme=light]{color-scheme:light;--bg:#fafaf8;--ink:#121212;--ink2:#3a3a3a;--sub:#6e6e6e;--line:#e3e3df;--line2:#c9c9c4;--card:#efefeb}
 *{box-sizing:border-box;min-width:0}
 html{scroll-padding-top:80px}
@@ -183,6 +160,8 @@ nav.menu a:hover,nav.menu a[aria-current=page]{color:var(--ink)}
 .disc a:hover h3{text-decoration:underline;text-underline-offset:4px}
 .alb{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,5vw,64px);align-items:start}
 .alb h1{font-size:clamp(28px,4vw,44px);line-height:1.2;margin:8px 0 0}
+.adesc{margin-top:28px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.85;color:var(--ink2);max-width:38em}
+.adesc a{text-decoration:underline;text-underline-offset:3px}
 .trk{margin:0;padding-left:2.2em;font-size:16px;line-height:2.1}
 .rel{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:28px;align-items:end;text-decoration:none}
 .rel h3{font-size:clamp(22px,3vw,30px);margin:6px 0 0;line-height:1.3}
@@ -280,14 +259,7 @@ const SUPABASE_KEY = 'sb_publishable_GwF9Qvd8NFwObGYqogKgpw_OPrwFRwU';
   </div>
 </header>
 
-<main id="app">
-  <!-- 자바스크립트를 실행하지 않는 검색봇·미리보기봇이 읽는 기본 내용. 페이지가 열리면 실제 내용으로 바로 바뀌어요. -->
-  <section class="hero"><div class="wrap t"><h1>ELECTRODIVE 12</h1><p>영원과 찰나를 노래하는 밴드</p></div></section>
-  <section class="sec"><div class="wrap"><div class="about">ELECTRODIVE 12(ED12, 일렉트로다이브12)는 영원과 찰나를 노래하는 대한민국의 모던록 밴드입니다.
-공연 일정과 소식, 앨범, 멤버 소개를 이 홈페이지에서 확인할 수 있어요.</div>
-    <div class="sns" style="margin-top:24px"><a class="btn ol" href="https://www.instagram.com/electrodive12/">Instagram</a><a class="btn ol" href="https://www.youtube.com/@ElectroDive12">YouTube</a></div>
-  </div></section>
-</main>
+<main id="app"><div class="wrap ph"><p class="sub">Loading…</p></div></main>
 
 <footer>
   <div class="wrap">
@@ -514,6 +486,7 @@ function pAlbum(id){
     <span class="dt">${esc([a.kind,D(a.release_date)?.full].filter(Boolean).join(' · '))}</span><h1>${esc(a.title)}</h1>
     ${editOn?`<div style="margin-top:12px">${eEdit('album',a.id)}</div>`:''}
     ${buy||st.length?`<div class="row" style="margin-top:24px">${buy?`<a class="btn" href="${esc(buy)}" target="_blank" rel="noopener">BUY →</a>`:''}${st.map(s=>`<a class="btn ol" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener">${esc(s.label||'LISTEN')}</a>`).join('')}</div>`:''}
+    ${a.description?`<div class="adesc">${linkify(a.description)}</div>`:''}
     ${a.tracks?.length?`<section class="blk"><h2>TRACKLIST</h2><ol class="trk">${a.tracks.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></section>`:''}
     ${a.credits?`<section class="blk"><h2>CREDITS</h2><div class="body" style="margin:0;color:var(--ink2);font-size:15px">${linkify(a.credits)}</div></section>`:''}
   </div></div><a class="back" href="#/discography">← DISCOGRAPHY</a></div>`;
@@ -595,7 +568,7 @@ const SPEC={
   live:{t:'hp_lives',n:'공연',f:[['date','날짜','date',{req:1}],['title','공연 이름','text',{req:1}],['venue','장소','text'],['time','시간','text',{ph:'OPEN 18:30 / START 19:00'}],['ticket_url','티켓 링크','url'],
     ['info','공연 정보','textarea',{hint:'출연, 가격 등'}],['setlist','셋리스트','lines',{hint:'한 줄에 한 곡'}],['youtube','유튜브 링크','lines',{hint:'한 줄에 하나'}],['photos','사진 (8장까지)','photos',{max:8}],['diary','공연일기','textarea']]},
   people:{t:'hp_people',n:'멤버',f:[['name','활동명','text',{req:1}],['part','포지션','text',{ph:'Guitar / Vocal'}],['bio','소개','textarea'],['photo','사진','photo'],['sort','보이는 순서 (작은 숫자가 먼저)','number'],['visible','홈페이지에 보이기','check',{def:true}]]},
-  album:{t:'hp_albums',n:'앨범',f:[['title','앨범 이름','text',{req:1}],['kind','종류','select',{opts:['','정규','EP','싱글','디지털 싱글','라이브']}],['release_date','발매일','date'],['cover','앨범 자켓','photo'],
+  album:{t:'hp_albums',n:'앨범',f:[['title','앨범 이름','text',{req:1}],['kind','종류','select',{opts:['','정규','EP','싱글','디지털 싱글','라이브']}],['release_date','발매일','date'],['cover','앨범 자켓','photo'],['description','앨범 소개','textarea',{hint:'짧은 소개 글. 링크 버튼과 곡 순서 사이에 보여요'}],
     ['tracks','곡 순서','lines',{hint:'한 줄에 한 곡'}],['credits','크레딧','textarea'],['buy_url','구매 링크','url'],['streams','스트리밍 링크','links',{hint:'한 줄에 하나씩 "이름 | 주소" (예: Spotify | https://...)'}]]}
 };
 let F=null; // 지금 열린 폼 상태
